@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  useGuestbookEntries,
+  // useGuestbookEntries,
   createGuestbookEntry,
   usePods,
 } from '../graphql/api';
@@ -18,9 +18,9 @@ import {
   heroEntries,
 } from '../styles/hero';
 
-function getEntries(data) {
-  return data ? data.entries.data.reverse() : [];
-}
+// function getEntries(data) {
+//   return data ? data.entries.data.reverse() : [];
+// }
 function getPods(data) {
   return data ? data.pods.data.reverse() : [];
 }
@@ -28,7 +28,8 @@ function getPods(data) {
 export default function Hero(props) {
 
   // 1. run HOOK and receive response
-  const { data, errorMessage } = useGuestbookEntries();
+  // const { data, errorMessage } = useGuestbookEntries();
+  const { data, errorMessage } = usePods();
   // const { podData, podErrorMessage } = usePods();
 
   const [entries, setEntries] = useState([]);
@@ -39,11 +40,11 @@ export default function Hero(props) {
   const [submitting, setSubmitting] = useState(false);
 
   // 2. When data comes in, IF there's no data in state, set into state
-  useEffect(() => {
-    if (!entries.length) {
-      setEntries(getEntries(data));
-    }
-  }, [data, entries.length]);
+  // useEffect(() => {
+  //   if (!entries.length) {
+  //     setEntries(getEntries(data));
+  //   }
+  // }, [data, entries.length]);
   
   // 2. When data comes in, IF there's no data in state, set into state
   // useEffect(() => {
