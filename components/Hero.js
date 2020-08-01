@@ -6,8 +6,6 @@ import {
   usePods,
 } from '../graphql/api';
 import Header from './Header';
-import GuestbookEntry from './GuestbookEntry';
-import GuestbookEntryDivider from './GuestbookEntryDivider';
 import {
   hero,
   heroContainer,
@@ -27,7 +25,6 @@ function getPods(data) {
 }
 
 export default function Hero(props) {
-
   // 1. run HOOK and receive response
   // const { data, errorMessage } = useGuestbookEntries();
   // const { data, errorMessage } = usePods();
@@ -37,21 +34,11 @@ export default function Hero(props) {
   // const [entries, setEntries] = useState([]);
   const [pods, setPods] = useState([]);
 
-  // const [twitterHandle, setTwitterHandle] = useState('');
-  // const [story, setStory] = useState('');
   const [leader, setLeader] = useState('');
   const [child1, setChild1] = useState('');
 
-
   const [submitting, setSubmitting] = useState(false);
 
-  // 2. When data comes in, IF there's no data in state, set into state
-  // useEffect(() => {
-  //   if (!entries.length) {
-  //     setEntries(getEntries(data));
-  //   }
-  // }, [data, entries.length]);
-  
   // 2. When data comes in, IF there's no data in state, set into state
   useEffect(() => {
     if (!pods.length) {
@@ -59,64 +46,23 @@ export default function Hero(props) {
     }
   }, [data, pods.length]);
 
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-
-  //   if (twitterHandle.trim().length === 0) {
-  //     alert('Please provide a valid twitter handle :)');
-  //     return;
-  //   }
-  //   if (story.trim().length === 0) {
-  //     alert('No favorite memory? This cannot be!');
-  //     return;
-  //   }
-  //   setSubmitting(true);
-  //   createGuestbookEntry(twitterHandle, story)
-  //     .then((data) => {
-  //       entries.unshift(data.data.createGuestbookEntry);
-  //       setTwitterHandle('');
-  //       setStory('');
-  //       setEntries(entries);
-  //       setSubmitting(false);
-  //     })
-  //     .catch((error) => {
-  //       console.log(`boo :( ${error}`);
-  //       alert('🤷‍♀️');
-  //       setSubmitting(false);
-  //     });
-  // }
-
   function handleCreatePod(event) {
     event.preventDefault();
 
-    // if (twitterHandle.trim().length === 0) {
-    //   alert('Please provide a valid twitter handle :)');
-    //   return;
-    // }
-    // if (story.trim().length === 0) {
-    //   alert('No favorite memory? This cannot be!');
-    //   return;
-    // }
+    if (leader.trim().length === 0) {
+      alert('Please provide a leader name :)');
+      return;
+    }
+    if (child1.trim().length === 0) {
+      alert('Please provide a child name :');
+      return;
+    }
     setSubmitting(true);
-    
-    // createGuestbookEntry(twitterHandle, story)
-    //   .then((data) => {
-    //     entries.unshift(data.data.createGuestbookEntry);
-    //     setTwitterHandle('');
-    //     setStory('');
-    //     setEntries(entries);
-    //     setSubmitting(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(`boo :( ${error}`);
-    //     alert('🤷‍♀️');
-    //     setSubmitting(false);
-    //   });
 
     // return the response from mutation request
     createPod(leader, child1)
       .then((data) => {
-        // add the new pod to 
+        // add the new pod to
         // entries.unshift(data.data.createPod);
         pods.unshift(data.data.createPod);
         setLeader('');
@@ -135,7 +81,6 @@ export default function Hero(props) {
   function handleChild1Change(event) {
     setChild1(event.target.value);
   }
-
   function handleLeaderChange(event) {
     setLeader(event.target.value);
   }
@@ -143,26 +88,20 @@ export default function Hero(props) {
   return (
     <div className={heroContainer.className}>
       {
-        console.log('data!:', data ? JSON.stringify(data) : "none"),
-        console.log('pods local state:', pods ? pods: "none")
+        (console.log('data!:', data ? JSON.stringify(data) : 'none'),
+        console.log('pods local state:', pods ? pods : 'none'))
       }
 
       <div className={hero.className}>
         <Header />
 
-    {/* <h1>ENTRIES:{
-      JSON.stringify(entries)
-      }</h1> */}
-
-<h1>PODS:{
-      JSON.stringify(pods)
-      }</h1>
+        <p>PODS:{JSON.stringify(pods)}</p>
         <form className={heroForm.className} onSubmit={handleCreatePod}>
           <fieldset
             className={heroFormFieldset.className}
             disabled={submitting && 'disabled'}
           >
-            <textarea
+            {/* <input
               className={heroFormTextArea.className}
               rows="5"
               cols="50"
@@ -170,13 +109,22 @@ export default function Hero(props) {
               placeholder="What is your favorite memory as a developer?"
               onChange={handleChild1Change}
               value={child1}
+            /> */}
+            <input
+              className={heroFormTwitterInput.className}
+              type="text"
+              placeholder="Enter Child name"
+              onChange={handleChild1Change}
+              value={child1}
+              name="child1"
             />
             <input
               className={heroFormTwitterInput.className}
               type="text"
-              placeholder="twitter handle (no '@')"
+              placeholder="Enter Leader name"
               onChange={handleLeaderChange}
               value={leader}
+              name="leader"
             />
             <input
               className={heroFormSubmitButton.className}
@@ -186,22 +134,26 @@ export default function Hero(props) {
           </fieldset>
         </form>
       </div>
+
       <div className={heroEntries.className}>
         {errorMessage ? (
           <p>{errorMessage}</p>
         ) : !data ? (
           <p>Loading pods...</p>
         ) : (
-          pods.map((entry, index, allPods) => {
-            const date = new Date(entry._ts / 1000);
+          pods.map((pod, index, podsArray) => {
+            const date = new Date(pod._ts / 1000);
             return (
-              <div key={entry._id}>
-                <GuestbookEntry
-                  twitter_handle={entry.twitter_handle}
-                  story={entry.story}
-                  date={date}
-                />
-                {index < allPods.length - 1 && <GuestbookEntryDivider />}
+              <div key={pod._id}>
+
+                <div>
+                  <h6>{pod._id}</h6>
+                  <h5>Leader: {pod.leader}</h5>
+                  <h5>Child 1: {pod.child1}</h5>
+                  {/* <h6>Date{date}</h6> */}
+                </div>
+
+                {index < podsArray.length - 1 && "---------"}
               </div>
             );
           })

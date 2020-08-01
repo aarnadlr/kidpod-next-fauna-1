@@ -14,16 +14,20 @@ const Guestbook = (props) => {
           href="/static/favicon.png"
         />
       </Head>
+
+
+      <div>
+
+        {/* <Hero /> */}
+        {/* <Footer /> */}
+      </div>
+
       <style jsx global>{`
         body {
           margin: 0px;
           padding: 0px;
         }
       `}</style>
-      <div>
-        <Hero />
-        <Footer />
-      </div>
       <style jsx>{`
         div {
           display: flex;

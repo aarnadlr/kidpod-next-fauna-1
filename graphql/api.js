@@ -65,6 +65,7 @@ function getErrorMessage(error, data) {
 
 
 // Define HOOK which encaps the query and fetch request:
+// This query is for ALL PODS (not necessary)
 export const usePods = () => {
   const query = `query {
     pods {
