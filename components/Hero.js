@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react'
-import { useGuestbookEntries, createGuestbookEntry } from '../graphql/api'
-import Header from './Header'
-import GuestbookEntry from './GuestbookEntry'
-import GuestbookEntryDivider from './GuestbookEntryDivider'
+import { useState, useEffect } from 'react';
+import {
+  useGuestbookEntries,
+  createGuestbookEntry,
+  usePods,
+} from '../graphql/api';
+import Header from './Header';
+import GuestbookEntry from './GuestbookEntry';
+import GuestbookEntryDivider from './GuestbookEntryDivider';
 import {
   hero,
   heroContainer,
@@ -12,61 +16,84 @@ import {
   heroFormTwitterInput,
   heroFormSubmitButton,
   heroEntries,
-} from '../styles/hero'
+} from '../styles/hero';
 
 function getEntries(data) {
-  return data ? data.entries.data.reverse() : []
+  return data ? data.entries.data.reverse() : [];
+}
+function getPods(data) {
+  return data ? data.pods.data.reverse() : [];
 }
 
 export default function Hero(props) {
-  const { data, errorMessage } = useGuestbookEntries()
-  const [entries, setEntries] = useState([])
-  const [twitterHandle, setTwitterHandle] = useState('')
-  const [story, setStory] = useState('')
-  const [submitting, setSubmitting] = useState(false)
 
+  // 1. run HOOK and receive response
+  const { data, errorMessage } = useGuestbookEntries();
+  // const { podData, podErrorMessage } = usePods();
+
+  const [entries, setEntries] = useState([]);
+  // const [pods, setPods] = useState([]);
+
+  const [twitterHandle, setTwitterHandle] = useState('');
+  const [story, setStory] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  // 2. When data comes in, IF there's no data in state, set into state
   useEffect(() => {
     if (!entries.length) {
-      setEntries(getEntries(data))
+      setEntries(getEntries(data));
     }
-  }, [data, entries.length])
+  }, [data, entries.length]);
+  
+  // 2. When data comes in, IF there's no data in state, set into state
+  // useEffect(() => {
+  //   if (!pods.length) {
+  //     setPods(getPods(podData));
+  //   }
+  // }, [podData, pods.length]);
 
   function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
+
     if (twitterHandle.trim().length === 0) {
-      alert('Please provide a valid twitter handle :)')
-      return
+      alert('Please provide a valid twitter handle :)');
+      return;
     }
     if (story.trim().length === 0) {
-      alert('No favorite memory? This cannot be!')
-      return
+      alert('No favorite memory? This cannot be!');
+      return;
     }
-    setSubmitting(true)
+    setSubmitting(true);
     createGuestbookEntry(twitterHandle, story)
       .then((data) => {
-        entries.unshift(data.data.createGuestbookEntry)
-        setTwitterHandle('')
-        setStory('')
-        setEntries(entries)
-        setSubmitting(false)
+        entries.unshift(data.data.createGuestbookEntry);
+        setTwitterHandle('');
+        setStory('');
+        setEntries(entries);
+        setSubmitting(false);
       })
       .catch((error) => {
-        console.log(`boo :( ${error}`)
-        alert('🤷‍♀️')
-        setSubmitting(false)
-      })
+        console.log(`boo :( ${error}`);
+        alert('🤷‍♀️');
+        setSubmitting(false);
+      });
   }
 
   function handleStoryChange(event) {
-    setStory(event.target.value)
+    setStory(event.target.value);
   }
 
   function handleTwitterChange(event) {
-    setTwitterHandle(event.target.value.replace('@', ''))
+    setTwitterHandle(event.target.value.replace('@', ''));
   }
 
   return (
     <div className={heroContainer.className}>
+      {
+        console.log('all data:', data ? JSON.stringify(data) : "none"),
+        console.log('podErrorMessage:', errorMessage ? errorMessage: "none")
+      }
+
       <div className={hero.className}>
         <Header />
         <form className={heroForm.className} onSubmit={handleSubmit}>
@@ -105,7 +132,7 @@ export default function Hero(props) {
           <p>Loading entries...</p>
         ) : (
           entries.map((entry, index, allEntries) => {
-            const date = new Date(entry._ts / 1000)
+            const date = new Date(entry._ts / 1000);
             return (
               <div key={entry._id}>
                 <GuestbookEntry
@@ -115,7 +142,7 @@ export default function Hero(props) {
                 />
                 {index < allEntries.length - 1 && <GuestbookEntryDivider />}
               </div>
-            )
+            );
           })
         )}
       </div>
@@ -128,5 +155,5 @@ export default function Hero(props) {
       {heroContainer.styles}
       {hero.styles}
     </div>
-  )
+  );
 }

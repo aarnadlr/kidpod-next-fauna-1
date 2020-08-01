@@ -13,7 +13,6 @@ type Query {
   pods: [Pod]
 }
 
-
 type Pod {
   leader: String!
   child1: String!

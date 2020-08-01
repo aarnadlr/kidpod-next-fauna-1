@@ -35,6 +35,45 @@ export const useGuestbookEntries = () => {
       }
       after
     }
+    pods {
+      data {
+        leader
+        child1
+      }
+    }
+  }`
+  const size = 100
+  const { data, error } = useFetch(process.env.faunaDbGraphQlEndpoint, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.faunaDbSecret}`,
+      'Content-type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables: { size },
+    }),
+  })
+
+  return {
+    data: getData(data),
+    errorMessage: getErrorMessage(error, data),
+    error,
+  }
+}
+
+
+// HOOK which encaps the query and fetch request:
+export const usePods = () => {
+  const query = `query Pods($size: Int) {
+    pods(_size: $size) {
+      data {
+        leader
+        child1
+      }
+      after
+    }
   }`
   const size = 100
   const { data, error } = useFetch(process.env.faunaDbGraphQlEndpoint, {
