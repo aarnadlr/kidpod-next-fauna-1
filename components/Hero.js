@@ -23,7 +23,7 @@ import {
 //   return data ? data.entries.data.reverse() : [];
 // }
 function getPods(data) {
-  return data ? data.entries.data.reverse() : [];
+  return data ? data.pods.data.reverse() : [];
 }
 
 export default function Hero(props) {
@@ -31,13 +31,13 @@ export default function Hero(props) {
   // 1. run HOOK and receive response
   // const { data, errorMessage } = useGuestbookEntries();
   const { data, errorMessage } = usePods();
-  // const { podData, podErrorMessage } = usePods();
+  const { podData, podErrorMessage } = usePods();
 
-  const [entries, setEntries] = useState([]);
-  // const [pods, setPods] = useState([]);
+  // const [entries, setEntries] = useState([]);
+  const [pods, setPods] = useState([]);
 
-  const [twitterHandle, setTwitterHandle] = useState('');
-  const [story, setStory] = useState('');
+  // const [twitterHandle, setTwitterHandle] = useState('');
+  // const [story, setStory] = useState('');
   const [leader, setLeader] = useState('');
   const [child1, setChild1] = useState('');
 
@@ -52,11 +52,11 @@ export default function Hero(props) {
   // }, [data, entries.length]);
   
   // 2. When data comes in, IF there's no data in state, set into state
-  // useEffect(() => {
-  //   if (!pods.length) {
-  //     setPods(getPods(podData));
-  //   }
-  // }, [podData, pods.length]);
+  useEffect(() => {
+    if (!pods.length) {
+      setPods(getPods(podData));
+    }
+  }, [podData, pods.length]);
 
   // function handleSubmit(event) {
   //   event.preventDefault();
@@ -111,12 +111,17 @@ export default function Hero(props) {
     //     alert('🤷‍♀️');
     //     setSubmitting(false);
     //   });
+
+    // return the response from mutation request
     createPod(leader, child1)
       .then((data) => {
-        entries.unshift(data.data.createPod);
+        // add the new pod to 
+        // entries.unshift(data.data.createPod);
+        pods.unshift(data.data.createPod);
         setLeader('');
         setChild1('');
-        setEntries(entries);
+        // setEntries(entries);
+        setPods(pods);
         setSubmitting(false);
       })
       .catch((error) => {
@@ -137,12 +142,20 @@ export default function Hero(props) {
   return (
     <div className={heroContainer.className}>
       {
-        console.log('all data:', data ? JSON.stringify(data) : "none"),
-        console.log('podErrorMessage:', errorMessage ? errorMessage: "none")
+        console.log('all data:', data ? JSON.stringify(data) : "none")
+        // console.log('podErrorMessage:', errorMessage ? errorMessage: "none")
       }
 
       <div className={hero.className}>
         <Header />
+
+    {/* <h1>ENTRIES:{
+      JSON.stringify(entries)
+      }</h1> */}
+
+<h1>PODS:{
+      JSON.stringify(pods)
+      }</h1>
         <form className={heroForm.className} onSubmit={handleCreatePod}>
           <fieldset
             className={heroFormFieldset.className}
@@ -173,12 +186,12 @@ export default function Hero(props) {
         </form>
       </div>
       <div className={heroEntries.className}>
-        {errorMessage ? (
-          <p>{errorMessage}</p>
+        {podErrorMessage ? (
+          <p>{podErrorMessage}</p>
         ) : !data ? (
-          <p>Loading entries...</p>
+          <p>Loading pods...</p>
         ) : (
-          entries.map((entry, index, allEntries) => {
+          pods.map((entry, index, allPods) => {
             const date = new Date(entry._ts / 1000);
             return (
               <div key={entry._id}>
@@ -187,7 +200,7 @@ export default function Hero(props) {
                   story={entry.story}
                   date={date}
                 />
-                {index < allEntries.length - 1 && <GuestbookEntryDivider />}
+                {index < allPods.length - 1 && <GuestbookEntryDivider />}
               </div>
             );
           })

@@ -140,8 +140,10 @@ export const usePods = () => {
 //   return data
 // }
 
-
+// Take in the user-inputted data fields
 export const createPod = async (leader, child1) => {
+
+  // pass the data to the gql mutation function
   const query = `mutation CreatePod($leader: String!, $child1: String!) {
     createPod(data: {
       leader: $leader,
@@ -153,7 +155,7 @@ export const createPod = async (leader, child1) => {
       child1
     }
   }`
-
+  // create the fetch request
   const res = await fetch(process.env.faunaDbGraphQlEndpoint, {
     method: 'POST',
     headers: {
@@ -167,6 +169,6 @@ export const createPod = async (leader, child1) => {
     }),
   })
   const data = await res.json()
-
+  console.log('data after mutation:', data)
   return data
 }
