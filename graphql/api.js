@@ -64,13 +64,15 @@ function getErrorMessage(error, data) {
 // }
 
 
-// HOOK which encaps the query and fetch request:
+// Define HOOK which encaps the query and fetch request:
 export const usePods = () => {
   const query = `query {
     pods {
       data {
         leader
         child1
+        _id
+        _ts
       }
     }
   }`

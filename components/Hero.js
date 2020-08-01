@@ -30,8 +30,9 @@ export default function Hero(props) {
 
   // 1. run HOOK and receive response
   // const { data, errorMessage } = useGuestbookEntries();
+  // const { data, errorMessage } = usePods();
+  // const { podData, podErrorMessage } = usePods();
   const { data, errorMessage } = usePods();
-  const { podData, podErrorMessage } = usePods();
 
   // const [entries, setEntries] = useState([]);
   const [pods, setPods] = useState([]);
@@ -54,9 +55,9 @@ export default function Hero(props) {
   // 2. When data comes in, IF there's no data in state, set into state
   useEffect(() => {
     if (!pods.length) {
-      setPods(getPods(podData));
+      setPods(getPods(data));
     }
-  }, [podData, pods.length]);
+  }, [data, pods.length]);
 
   // function handleSubmit(event) {
   //   event.preventDefault();
@@ -142,8 +143,8 @@ export default function Hero(props) {
   return (
     <div className={heroContainer.className}>
       {
-        console.log('all data:', data ? JSON.stringify(data) : "none")
-        // console.log('podErrorMessage:', errorMessage ? errorMessage: "none")
+        console.log('data!:', data ? JSON.stringify(data) : "none"),
+        console.log('pods local state:', pods ? pods: "none")
       }
 
       <div className={hero.className}>
@@ -186,8 +187,8 @@ export default function Hero(props) {
         </form>
       </div>
       <div className={heroEntries.className}>
-        {podErrorMessage ? (
-          <p>{podErrorMessage}</p>
+        {errorMessage ? (
+          <p>{errorMessage}</p>
         ) : !data ? (
           <p>Loading pods...</p>
         ) : (
