@@ -22,6 +22,8 @@ function getErrorMessage(error, data) {
 | Learn more about GraphQL: https://graphql.org/learn/
 |--------------------------------------------------
 */
+
+// HOOK which encaps the query and fetch request:
 export const useGuestbookEntries = () => {
   const query = `query Entries($size: Int) {
     entries(_size: $size) {
