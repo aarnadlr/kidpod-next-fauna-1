@@ -110,16 +110,47 @@ export const usePods = () => {
 | Learn more about GraphQL mutations: https://graphql.org/learn/queries/#mutations
 |--------------------------------------------------
 */
-export const createGuestbookEntry = async (twitterHandle, story) => {
-  const query = `mutation CreateGuestbookEntry($twitterHandle: String!, $story: String!) {
-    createGuestbookEntry(data: {
-      twitter_handle: $twitterHandle,
-      story: $story
+// export const createGuestbookEntry = async (twitterHandle, story) => {
+//   const query = `mutation CreateGuestbookEntry($twitterHandle: String!, $story: String!) {
+//     createGuestbookEntry(data: {
+//       twitter_handle: $twitterHandle,
+//       story: $story
+//     }) {
+//       _id
+//       _ts
+//       twitter_handle
+//       story
+//     }
+//   }`
+
+//   const res = await fetch(process.env.faunaDbGraphQlEndpoint, {
+//     method: 'POST',
+//     headers: {
+//       Authorization: `Bearer ${process.env.faunaDbSecret}`,
+//       'Content-type': 'application/json',
+//       Accept: 'application/json',
+//     },
+//     body: JSON.stringify({
+//       query,
+//       variables: { twitterHandle, story },
+//     }),
+//   })
+//   const data = await res.json()
+
+//   return data
+// }
+
+
+export const createPod = async (leader, child1) => {
+  const query = `mutation CreatePod($leader: String!, $child1: String!) {
+    createPod(data: {
+      leader: $leader,
+      child1: $child1
     }) {
       _id
       _ts
-      twitter_handle
-      story
+      leader
+      child1
     }
   }`
 
@@ -132,7 +163,7 @@ export const createGuestbookEntry = async (twitterHandle, story) => {
     },
     body: JSON.stringify({
       query,
-      variables: { twitterHandle, story },
+      variables: { leader, child1 },
     }),
   })
   const data = await res.json()

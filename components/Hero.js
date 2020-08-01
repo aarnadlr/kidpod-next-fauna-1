@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
   // useGuestbookEntries,
-  createGuestbookEntry,
+  // createGuestbookEntry,
+  createPod,
   usePods,
 } from '../graphql/api';
 import Header from './Header';
@@ -22,7 +23,7 @@ import {
 //   return data ? data.entries.data.reverse() : [];
 // }
 function getPods(data) {
-  return data ? data.pods.data.reverse() : [];
+  return data ? data.entries.data.reverse() : [];
 }
 
 export default function Hero(props) {
@@ -37,6 +38,10 @@ export default function Hero(props) {
 
   const [twitterHandle, setTwitterHandle] = useState('');
   const [story, setStory] = useState('');
+  const [leader, setLeader] = useState('');
+  const [child1, setChild1] = useState('');
+
+
   const [submitting, setSubmitting] = useState(false);
 
   // 2. When data comes in, IF there's no data in state, set into state
@@ -53,23 +58,64 @@ export default function Hero(props) {
   //   }
   // }, [podData, pods.length]);
 
-  function handleSubmit(event) {
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+
+  //   if (twitterHandle.trim().length === 0) {
+  //     alert('Please provide a valid twitter handle :)');
+  //     return;
+  //   }
+  //   if (story.trim().length === 0) {
+  //     alert('No favorite memory? This cannot be!');
+  //     return;
+  //   }
+  //   setSubmitting(true);
+  //   createGuestbookEntry(twitterHandle, story)
+  //     .then((data) => {
+  //       entries.unshift(data.data.createGuestbookEntry);
+  //       setTwitterHandle('');
+  //       setStory('');
+  //       setEntries(entries);
+  //       setSubmitting(false);
+  //     })
+  //     .catch((error) => {
+  //       console.log(`boo :( ${error}`);
+  //       alert('🤷‍♀️');
+  //       setSubmitting(false);
+  //     });
+  // }
+
+  function handleCreatePod(event) {
     event.preventDefault();
 
-    if (twitterHandle.trim().length === 0) {
-      alert('Please provide a valid twitter handle :)');
-      return;
-    }
-    if (story.trim().length === 0) {
-      alert('No favorite memory? This cannot be!');
-      return;
-    }
+    // if (twitterHandle.trim().length === 0) {
+    //   alert('Please provide a valid twitter handle :)');
+    //   return;
+    // }
+    // if (story.trim().length === 0) {
+    //   alert('No favorite memory? This cannot be!');
+    //   return;
+    // }
     setSubmitting(true);
-    createGuestbookEntry(twitterHandle, story)
+    
+    // createGuestbookEntry(twitterHandle, story)
+    //   .then((data) => {
+    //     entries.unshift(data.data.createGuestbookEntry);
+    //     setTwitterHandle('');
+    //     setStory('');
+    //     setEntries(entries);
+    //     setSubmitting(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(`boo :( ${error}`);
+    //     alert('🤷‍♀️');
+    //     setSubmitting(false);
+    //   });
+    createPod(leader, child1)
       .then((data) => {
-        entries.unshift(data.data.createGuestbookEntry);
-        setTwitterHandle('');
-        setStory('');
+        entries.unshift(data.data.createPod);
+        setLeader('');
+        setChild1('');
         setEntries(entries);
         setSubmitting(false);
       })
@@ -80,12 +126,12 @@ export default function Hero(props) {
       });
   }
 
-  function handleStoryChange(event) {
-    setStory(event.target.value);
+  function handleChild1Change(event) {
+    setChild1(event.target.value);
   }
 
-  function handleTwitterChange(event) {
-    setTwitterHandle(event.target.value.replace('@', ''));
+  function handleLeaderChange(event) {
+    setLeader(event.target.value);
   }
 
   return (
@@ -97,7 +143,7 @@ export default function Hero(props) {
 
       <div className={hero.className}>
         <Header />
-        <form className={heroForm.className} onSubmit={handleSubmit}>
+        <form className={heroForm.className} onSubmit={handleCreatePod}>
           <fieldset
             className={heroFormFieldset.className}
             disabled={submitting && 'disabled'}
@@ -108,15 +154,15 @@ export default function Hero(props) {
               cols="50"
               name="story"
               placeholder="What is your favorite memory as a developer?"
-              onChange={handleStoryChange}
-              value={story}
+              onChange={handleChild1Change}
+              value={child1}
             />
             <input
               className={heroFormTwitterInput.className}
               type="text"
               placeholder="twitter handle (no '@')"
-              onChange={handleTwitterChange}
-              value={twitterHandle}
+              onChange={handleLeaderChange}
+              value={leader}
             />
             <input
               className={heroFormSubmitButton.className}
