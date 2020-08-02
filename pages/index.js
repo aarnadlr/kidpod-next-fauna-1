@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import Footer from '../components/Footer'
-import Hero from '../components/Hero'
+import Home from '../components/Home/Home'
 
 const Guestbook = (props) => {
   return (
@@ -15,11 +14,8 @@ const Guestbook = (props) => {
         />
       </Head>
 
-
       <div>
-
-        {/* <Hero /> */}
-        {/* <Footer /> */}
+        <Home/>
       </div>
 
       <style jsx global>{`
