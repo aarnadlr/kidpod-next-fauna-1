@@ -1,9 +1,13 @@
 import Head from 'next/head'
 import Home from '../components/Home/Home'
+import { useUser } from '../lib/hooks'
+import Layout from '../components/Layout';
 
-const Guestbook = (props) => {
+const Index = (props) => {
+  const user = useUser()
+
   return (
-    <>
+    <Layout>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="utf-8" />
@@ -16,6 +20,16 @@ const Guestbook = (props) => {
 
       <div>
         <Home/>
+
+<p>Above logged in content</p>
+        {user && (
+        <>
+          <p>Currently logged in as:</p>
+          <pre>{JSON.stringify(user, null, 2)}</pre>
+        </>
+      )}
+<p>Below logged in content</p>
+
       </div>
 
       <style jsx global>{`
@@ -34,8 +48,8 @@ const Guestbook = (props) => {
           align-items: center;
         }
       `}</style>
-    </>
+      </Layout>
   )
 }
 
-export default Guestbook
+export default Index

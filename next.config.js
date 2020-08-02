@@ -10,5 +10,9 @@ module.exports = {
     */
     faunaDbSecret: process.env.FAUNADB_SECRET,
     faunaDbGraphQlEndpoint: 'https://graphql.fauna.com/graphql',
+    NEXT_EXAMPLE_MAGIC_PUBLISHABLE_KEY: process.env.NEXT_EXAMPLE_MAGIC_PUBLISHABLE_KEY,
+    NEXT_EXAMPLE_MAGIC_SECRET_KEY: process.env.NEXT_EXAMPLE_MAGIC_SECRET_KEY,
+    NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY: process.env.NEXT_EXAMPLE_MAGIC_PUBLISHABLE_KEY,
+    MAGIC_SECRET_KEY: process.env.MAGIC_SECRET_KEY
   },
 }
