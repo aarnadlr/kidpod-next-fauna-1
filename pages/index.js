@@ -1,10 +1,10 @@
-import Head from 'next/head'
-import Home from '../components/Home/Home'
-import { useUser } from '../lib/hooks'
+import Head from 'next/head';
+import Home from '../components/Home/Home';
+import { useUser } from '../lib/hooks';
 import Layout from '../components/Layout';
 
 const Index = (props) => {
-  const user = useUser()
+  const user = useUser();
 
   return (
     <Layout>
@@ -19,17 +19,16 @@ const Index = (props) => {
       </Head>
 
       <div>
-        <Home/>
+        <Home />
 
-<p>Above logged in content</p>
+        <p>Above logged in content</p>
         {user && (
-        <>
-          <p>Currently logged in as:</p>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </>
-      )}
-<p>Below logged in content</p>
-
+          <>
+            <p>Currently logged in as:</p>
+            <pre>{JSON.stringify(user, null, 2)}</pre>
+          </>
+        )}
+        <p>Below logged in content</p>
       </div>
 
       <style jsx global>{`
@@ -48,8 +47,8 @@ const Index = (props) => {
           align-items: center;
         }
       `}</style>
-      </Layout>
-  )
-}
+    </Layout>
+  );
+};
 
-export default Index
+export default Index;
