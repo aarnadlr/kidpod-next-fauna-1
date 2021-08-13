@@ -15,7 +15,7 @@
     "graphql-request": "2.0.0",
     "isomorphic-unfetch": "3.0.0",
     "magic-sdk": "2.4.6",
-    "next": "9.5.1",
+    "next": "11.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "6.2.0",
